@@ -1,0 +1,8 @@
+{
+  "targets": 1000,
+  "edges": 1800,
+  "stages": 10,
+  "median_ms": 11.197,
+  "p95_ms": 12.976,
+  "runs": 50
+}

@@ -1,0 +1,31 @@
+{
+  "targets": [
+    {
+      "name": "compile-core",
+      "command": "c++ -c src/core.cc -o build/core.o",
+      "inputs": ["src/core.cc", "include/core.h"],
+      "outputs": ["build/core.o"]
+    },
+    {
+      "name": "compile-api",
+      "command": "c++ -c src/api.cc -o build/api.o",
+      "inputs": ["src/api.cc", "include/api.h"],
+      "outputs": ["build/api.o"]
+    },
+    {
+      "name": "link-server",
+      "command": "c++ build/core.o build/api.o -o build/server",
+      "deps": ["compile-core", "compile-api"],
+      "inputs": ["build/core.o", "build/api.o"],
+      "outputs": ["build/server"]
+    },
+    {
+      "name": "package",
+      "command": "tar -czf build/server.tar.gz build/server",
+      "deps": ["link-server"],
+      "inputs": ["build/server"],
+      "outputs": ["build/server.tar.gz"]
+    }
+  ]
+}
+
