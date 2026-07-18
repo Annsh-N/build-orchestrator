@@ -1,12 +1,12 @@
 # Build Orchestrator
 
-Build Orchestrator is a small systems-infrastructure project for experimenting with deterministic build graph planning, cache-key design, and eventually distributed task execution.
+Build Orchestrator is a systems-infrastructure project for deterministic build graph planning and cache-key design.
 
-Current status: **v0 scaffold with a real DAG planner and benchmark harness**. It does not yet claim remote execution. The current implementation validates a build graph, detects cycles and missing dependencies, computes parallel execution stages, and derives deterministic cache keys from commands, inputs, outputs, dependencies, and source fingerprints.
+The current implementation validates a build graph, detects cycles and missing dependencies, computes parallel execution stages, and derives deterministic cache keys from commands, inputs, outputs, dependencies, and source fingerprints.
 
 ## Why this project
 
-Build systems are a good compact version of distributed infrastructure: dependency graphs, cache invalidation, scheduling, retries, worker coordination, content-addressed storage, and observability all matter. This repo starts with the part that must be correct before distribution: the graph planner and cache-key model.
+Build systems are a compact version of infrastructure engineering: dependency graphs, cache invalidation, scheduling, retries, worker coordination, content-addressed storage, and observability all matter. This repo focuses first on the graph planner and cache-key model that later execution layers depend on.
 
 ## Current Features
 
@@ -25,7 +25,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
 build-orchestrator examples/demo_graph.json
-PYTHONPATH=src python -m unittest
+PYTHONPATH=src python -m unittest discover -s tests -p "test_*.py"
 python scripts/benchmark.py
 ```
 
@@ -42,15 +42,3 @@ Latest local result on the synthetic benchmark:
 | p95 planning time | 12.976 ms |
 
 Run `python scripts/benchmark.py` to regenerate exact machine-local timings.
-
-## Roadmap
-
-1. Add a local executor with task states, retries, structured logs, and failure propagation.
-2. Add persistent cache metadata and artifact fingerprints.
-3. Add worker protocol simulation over HTTP or gRPC.
-4. Add scheduler benchmarks for fan-out, chain, and mixed DAG workloads.
-5. Add observability: queue depth, task latency, cache-hit rate, and critical path length.
-
-## Resume framing
-
-Use this repo honestly as an in-progress systems project: deterministic DAG planner, cache-key design, validation, and benchmark harness. Do not claim distributed workers until the executor/protocol exists.
